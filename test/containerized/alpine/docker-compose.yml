@@ -1,0 +1,40 @@
+services:
+  test:
+    image: pu_alpine_test_image:latest
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    container_name: pu_alpine_test_container
+    environment:
+      - PU_HOME=/mnt/pu-home
+    volumes:
+      - ../../..:/mnt/pu-home
+      - ./scripts:/mnt/scripts
+    entrypoint: /mnt/scripts/entrypoint.sh
+  
+  debug:
+    image: pu_alpine_test_image:latest
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    container_name: pu_alpine_debug_container
+    environment:
+      - PU_HOME=/mnt/pu-home
+    volumes:
+      - ../../..:/mnt/pu-home
+      - ./scripts:/mnt/scripts
+    entrypoint: /bin/sh
+  
+  shell-test:
+    image: pu_alpine_test_image:latest
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    container_name: pu_alpine_shell_test_container
+    environment:
+      - PU_HOME=/mnt/pu-home
+      - SHELL_TYPE=${SHELL_TYPE:-bash}
+    volumes:
+      - ../../..:/mnt/pu-home
+      - ./scripts:/mnt/scripts
+    entrypoint: /mnt/scripts/shell-test-entrypoint.sh

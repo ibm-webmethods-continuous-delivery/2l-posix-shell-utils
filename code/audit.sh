@@ -72,7 +72,7 @@ pu_logI() {
   #   $1 - Message to log
   __msg=${1:-no\ message\?}
   __time=$(date +%H%M%S)
-  echo "${__time}I|${__msg}"
+  echo "${__time}I|${__msg}" >&2
   echo "${__time}I|${__msg}" >>"${__pu_auditSessionLogFile}"
   unset __msg __time
 }
@@ -86,10 +86,10 @@ pu_logW() {
   if [ "${__pu_coloredOutput}" = "Y" ]; then
     __clr='\033[0;33m' # Yellow
     printf "%s%bW%b|%b%s%b\n" \
-      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
+      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}" >&2
     unset __clr
   else
-    echo "${__time}W|${__msg}"
+    echo "${__time}W|${__msg}" >&2
   fi
   echo "${__time}W|${__msg}" >>"${__pu_auditSessionLogFile}"
   unset __msg __time
@@ -104,10 +104,10 @@ pu_logE() {
   if [ "${__pu_coloredOutput}" = "Y" ]; then
     __clr='\033[0;31m' # Red
     printf "%s%bE%b|%b%s%b\n" \
-      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
+      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}" >&2
     unset __clr
   else
-    echo "${__time}E|${__msg}"
+    echo "${__time}E|${__msg}" >&2
   fi
   echo "${__time}E|${__msg}" >>"${__pu_auditSessionLogFile}"
   unset __msg __time
@@ -124,10 +124,10 @@ pu_logD() {
     if [ "${__pu_coloredOutput}" = "Y" ]; then
       __clr='\033[0;36m' # Cyan
       printf "%s%bD%b|%b%s%b\n" \
-        "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
+        "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}" >&2
       unset __clr
     else
-      echo "${__time}D|${__msg}"
+      echo "${__time}D|${__msg}" >&2
     fi
     echo "${__time}D|${__msg}" >>"${__pu_auditSessionLogFile}"
     unset __msg __time
@@ -193,9 +193,9 @@ pu_logFullEnv() {
   __log_prefix="audit.sh|pu_logFullEnv"
   if [ "${__pu_debugOn}" = "Y" ]; then
     pu_logD "${__log_prefix} -- Listing full environment... --"
-    env | sort
+    env | sort >&2
     pu_logD "${__log_prefix} -- Listing PU environment... --"
-    env | grep -i PU | sort >>"${__pu_auditSessionLogFile}"
+    env | grep -i PU | sort >>"${__pu_auditSessionLogFile}" >&2
   fi
   unset __log_prefix
 }

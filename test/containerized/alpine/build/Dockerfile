@@ -1,10 +1,10 @@
-ARG __from_img=alpine:3.22
+ARG __from_img=alpine:3.23
 FROM ${__from_img}
 
 # Add a user and group to run the container
-ARG __gid=888
+ARG __gid=1001
 ARG __gname=dev
-ARG __uid=888
+ARG __uid=1001
 ARG __uname=dev
 ARG __user_home=/home/${__uname}
 

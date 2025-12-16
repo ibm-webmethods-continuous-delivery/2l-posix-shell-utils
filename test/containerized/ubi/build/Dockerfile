@@ -2,9 +2,9 @@ ARG __from_img=registry.access.redhat.com/ubi8/ubi-minimal:latest
 FROM ${__from_img}
 
 # Add a user and group to run the container # keep the ids consistent across tests
-ARG __gid=888
+ARG __gid=1001
 ARG __gname=dev
-ARG __uid=888
+ARG __uid=1001
 ARG __uname=dev
 ARG __user_home=/home/${__uname}
 

@@ -27,6 +27,17 @@ pu_initAuditSession() {
   pu_logI "${__log_prefix} A new session had been initialized"
   pu_logI "${__log_prefix} Current timestamp is   : $(date +%y-%m-%dT%H.%M.%S)"
   pu_logI "${__log_prefix} Current session file is: ${__pu_auditSessionLogFile}"
+  pu_logI "${__log_prefix} =========> Received audit session variables:"
+  pu_logI "${__log_prefix} PU_AUDIT_BASE_DIR=${PU_AUDIT_BASE_DIR}"
+  pu_logI "${__log_prefix} PU_COLORED_OUTPUT=${PU_COLORED_OUTPUT}"
+  pu_logI "${__log_prefix} PU_DEBUG_ON=${PU_DEBUG_ON}"
+  pu_logI "${__log_prefix} PU_SESSION_TIMESTAMP=${PU_SESSION_TIMESTAMP}"
+  pu_logI "${__log_prefix} =========> Effective audit session variables:"
+  pu_logI "${__log_prefix} __pu_auditBaseDir=${__pu_auditBaseDir}"
+  pu_logI "${__log_prefix} __pu_auditSessionDir=${__pu_auditSessionDir}"
+  pu_logI "${__log_prefix} __pu_coloredOutput=${__pu_coloredOutput}"
+  pu_logI "${__log_prefix} __pu_debugOn=${__pu_debugOn}"
+  pu_logI "${__log_prefix} __pu_sessionTimestamp=${__pu_sessionTimestamp}"
   pu_logI "${__log_prefix} ==============================================================="
 
   unset __log_prefix
@@ -74,9 +85,8 @@ pu_logW() {
   __time=$(date +%H%M%S)
   if [ "${__pu_coloredOutput}" = "Y" ]; then
     __clr='\033[0;33m' # Yellow
-    printf \
-      "%s${__clr}W${__pu_clrReset}|${__clr}%s${__pu_clrReset}\n" \
-      "${__time}" "${__msg}"
+    printf "%s%bW%b|%b%s%b\n" \
+      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
     unset __clr
   else
     echo "${__time}W|${__msg}"
@@ -93,9 +103,8 @@ pu_logE() {
   __time=$(date +%H%M%S)
   if [ "${__pu_coloredOutput}" = "Y" ]; then
     __clr='\033[0;31m' # Red
-    printf \
-      "%s${__clr}E${__pu_clrReset}|${__clr}%s${__pu_clrReset}\n" \
-      "${__time}" "${__msg}"
+    printf "%s%bE%b|%b%s%b\n" \
+      "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
     unset __clr
   else
     echo "${__time}E|${__msg}"
@@ -114,9 +123,8 @@ pu_logD() {
     __time=$(date +%H%M%S)
     if [ "${__pu_coloredOutput}" = "Y" ]; then
       __clr='\033[0;36m' # Cyan
-      printf \
-        "%s${__clr}D${__pu_clrReset}|${__clr}%s${__pu_clrReset}\n" \
-        "${__time}" "${__msg}"
+      printf "%s%bD%b|%b%s%b\n" \
+        "${__time}" "${__clr}" "${__pu_clrReset}" "${__clr}" "${__msg}" "${__pu_clrReset}"
       unset __clr
     else
       echo "${__time}D|${__msg}"

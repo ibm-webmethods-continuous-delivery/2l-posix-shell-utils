@@ -1,17 +1,17 @@
-ARG __alpine_version=3.22.0
+ARG __alpine_version=3.23
 FROM alpine:${__alpine_version}
 
 # Alpine packages versions: https://pkgs.alpinelinux.org/
-ARG __curl_version=8.14.1-r1
-ARG __git_version=2.49.1-r0
+ARG __curl_version=8.17.0-r1
+ARG __git_version=2.52.0-r0
 ARG __mandoc_version=1.14.6-r13
-ARG __shellcheck_version=0.10.0-r2
-ARG __shfmt_version=3.11.0-r2
+ARG __shellcheck_version=0.11.0-r0
+ARG __shfmt_version=3.11.0-r5
 ARG __shunit2_version=2.1.8-r1
 
-ARG __gid=888
+ARG __gid=1001
 ARG __gname=dev
-ARG __uid=888
+ARG __uid=1001
 ARG __uname=dev
 ARG __user_home=/home/${__uname}
 

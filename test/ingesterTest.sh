@@ -8,12 +8,13 @@ testAssurePublicFileRealOnlineDownload() {
   # and that the PU_HOME environment variable is set to the correct path.
 
   export PU_CACHE_HOME="/tmp/pu-cache-test"
-  export PU_ONLINE_MODE="Y"
+  export PU_ONLINE_MODE="true"
+  export PU_INIT_INGESTER="true"
 
-  # shellcheck source=SCRIPTDIR/../code/audit.sh
-  . "${PU_HOME}/code/ingester.sh"
+  # shellcheck source=SCRIPTDIR/../code/1.init.sh
+  . "${PU_HOME}/code/1.init.sh"
 
-  pu_assurePublicFile "maven" \
+  pu_assure_public_file "maven" \
       "https://repo1.maven.org" \
       "maven2/com/github/johrstrom/jmeter-prometheus-plugin/0.6.0" \
       "jmeter-prometheus-plugin-0.6.0.jar" \
@@ -23,6 +24,6 @@ testAssurePublicFileRealOnlineDownload() {
     
     # 3. Verify function succeeded with real checksum
   assertEquals "Function should succeed with real checksum" 0 ${__test_result}
-  unset PU_CACHE_HOME PU_HOME PU_ONLINE_MODE
+  unset PU_CACHE_HOME PU_HOME PU_ONLINE_MODE PU_INIT_INGESTER
 
 }

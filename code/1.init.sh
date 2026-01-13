@@ -45,7 +45,7 @@ pu_init_hunt_for_pu_file() {
     fi
     __pu_source_branch=${PU_SOURCE_BRANCH:-main}
     # if tag is used, value is tag/$tag
-    __pu_home_url=${PU_HOME_URL:-https://raw.githubusercontent.com/ibm-webmethods-continuous-delivery/2l-posix-shell-utils/refs/${__pu_source_branch}
+    __pu_home_url=${PU_HOME_URL:-https://raw.githubusercontent.com/ibm-webmethods-continuous-delivery/2l-posix-shell-utils/refs/${__pu_source_branch}}
     _pu_init_info "03|File ${PU_HOME}/${1}/${2} not found in local cache, attempting download.."
     mkdir -p "${PU_HOME}/${1}"
     _pu_init_info "03|Downloading from ${__pu_home_url}/${1}/${2} ..."
@@ -108,3 +108,4 @@ _pu_init(){
 }
 
 _pu_init || exit $?
+# 

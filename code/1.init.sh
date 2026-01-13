@@ -43,9 +43,9 @@ pu_init_hunt_for_pu_file() {
       _pu_init_error "03|File ${PU_HOME}/${1}/${2} not found! Will not attempt download, as we are working offline!"
       return 1 # File should exist, but it does not
     fi
-    __pu_source_branch=${PU_SOURCE_BRANCH:-main}
+    __pu_source_tag=${PU_SOURCE_TAG:-v0.0.8}
     # if tag is used, value is tag/$tag
-    __pu_home_url=${PU_HOME_URL:-https://raw.githubusercontent.com/ibm-webmethods-continuous-delivery/2l-posix-shell-utils/refs/${__pu_source_branch}}
+    __pu_home_url=${PU_HOME_URL:-https://raw.githubusercontent.com/ibm-webmethods-continuous-delivery/2l-posix-shell-utils/refs/tags/${__pu_source_tag}}
     _pu_init_info "03|File ${PU_HOME}/${1}/${2} not found in local cache, attempting download.."
     mkdir -p "${PU_HOME}/${1}"
     _pu_init_info "03|Downloading from ${__pu_home_url}/${1}/${2} ..."

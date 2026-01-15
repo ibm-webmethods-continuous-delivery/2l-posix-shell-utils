@@ -12,7 +12,7 @@ _pu_init_error(){
   # $1 - error message
   if [ "${__pu_colored_mode}" = "true" ]; then
     _pu_init_red='\033[0;31m' # Red
-    printf "%b%s%b\n" "${_pu_init_red}" "PU1|ERROR: ${1}" "${__pu_clr_reset}" >&2
+    printf "PU1|%bERROR: %s%b\n" "${_pu_init_red}" "${1}" "${__pu_clr_reset}" >&2
     unset _pu_init_red
   else
     echo "PU1|ERROR: ${1}" >&2
@@ -26,7 +26,7 @@ _pu_init_info(){
   # $1 - info message
   if [ "${__pu_colored_mode}" = "true" ]; then
     _pu_init_cyan='\033[0;36m' # Cyan
-    printf "%b%s%b\n" "${_pu_init_cyan}" "PU1|INFO: ${1}" "${__pu_clr_reset}" >&2
+    printf "PU1|%bINFO: %s%b\n" "${_pu_init_cyan}" "${1}" "${__pu_clr_reset}" >&2
     unset _pu_init_cyan
   else
     echo "PU1|INFO: ${1}" >&2
@@ -107,5 +107,28 @@ _pu_init(){
   fi
 }
 
+# Function 05
+pu_msg_ok_utf8(){
+  __pu_clr_green='\033[0;32m'
+  printf "PU1|%b✅ ${1}%b\n" "${__pu_clr_green}" "${__pu_clr_reset}"
+}
+
+# Function 06
+pu_msg_fail_utf8(){
+  __pu_clr_red='\033[0;31m'
+  printf "PU1|%b❌ ${1}%b\n" "${__pu_clr_red}" "${__pu_clr_reset}"
+}
+
+# Function 07
+pu_msg_info_utf8(){
+  __pu_clr_blue='\033[0;34m'
+  printf "PU1|%bℹ️  ${1}%b\n" "${__pu_clr_blue}" "${__pu_clr_reset}"
+}
+
+# Function 08
+pu_msg_warning_utf8(){
+  __pu_clr_yellow='\033[1;33m'
+  printf "PU1|%b⚠️  ${1}%b\n" "${__pu_clr_yellow}" "${__pu_clr_reset}"
+}
+
 _pu_init || exit $?
-# 

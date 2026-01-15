@@ -71,7 +71,7 @@ pu_log_i() {
   # Args:
   #   $1 - Message to log
   __msg=${1:-no\ message\?}
-  __time=$(_pu_get_timestamp)
+  __time=$(date -u +%H%M%S)
   echo "${__time}I|${__msg}" >&2
   echo "${__time}I|${__msg}" >>"${__pu_audit_session_file}"
   unset __msg __time
@@ -82,7 +82,7 @@ pu_log_w() {
   # Args:
   #   $1 - Message to log
   __msg=${1:-no\ message\?}
-  __time=$(_pu_get_timestamp)
+  __time=$(date -u +%H%M%S)
   if [ "${__pu_colored_mode}" = "true" ]; then
     __clr='\033[0;33m' # Yellow
     printf "%s%bW%b|%b%s%b\n" \
@@ -100,7 +100,7 @@ pu_log_e() {
   # Args:
   #   $1 - Message to log
   __msg=${1:-no\ message\?}
-  __time=$(_pu_get_timestamp)
+  __time=$(date -u +%H%M%S)
   if [ "${__pu_colored_mode}" = "true" ]; then
     __clr='\033[0;31m' # Red
     printf "%s%bE%b|%b%s%b\n" \
@@ -120,7 +120,7 @@ pu_log_d() {
   # Only logs when __pu_debug_mode is true
   if [ "${__pu_debug_mode}" = "true" ]; then
     __msg=${1:-no\ message\?}
-    __time=$(_pu_get_timestamp)
+    __time=$(date -u +%H%M%S)
     if [ "${__pu_colored_mode}" = "true" ]; then
       __clr='\033[0;36m' # Cyan
       printf "%s%bD%b|%b%s%b\n" \

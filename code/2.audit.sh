@@ -35,7 +35,7 @@ pu_audit_init_session() {
   pu_log_i "PU2|01| =========> Effective audit session variables:"
   pu_log_i "PU2|01| __pu_audit_base_dir=${__pu_audit_base_dir}"
   pu_log_i "PU2|01| __pu_audit_session_dir=${__pu_audit_session_dir}"
-  pu_log_i "PU2|01| __pu_coloredOutput=${__pu_coloredOutput}"
+  pu_log_i "PU2|01| __pu_colored_mode=${__pu_colored_mode}"
   pu_log_i "PU2|01| __pu_debug_mode=${__pu_debug_mode}"
   pu_log_i "PU2|01| __pu_session_timestamp=${__pu_session_timestamp}"
   pu_log_i "PU2|01| ==============================================================="
@@ -72,8 +72,8 @@ pu_log_i() {
   #   $1 - Message to log
   __msg=${1:-no\ message\?}
   __time=$(date -u +%H%M%S)
-  echo "${__time}I|${__msg}" >&2
-  echo "${__time}I|${__msg}" >>"${__pu_audit_session_file}"
+  echo "${__time}I ${__msg}" >&2
+  echo "${__time}I ${__msg}" >>"${__pu_audit_session_file}"
   unset __msg __time
 }
 
@@ -85,13 +85,13 @@ pu_log_w() {
   __time=$(date -u +%H%M%S)
   if [ "${__pu_colored_mode}" = "true" ]; then
     __clr='\033[0;33m' # Yellow
-    printf "%s%bW%b|%b%s%b\n" \
+    printf "%s%bW%b %b%s%b\n" \
       "${__time}" "${__clr}" "${__pu_clr_reset}" "${__clr}" "${__msg}" "${__pu_clr_reset}" >&2
     unset __clr
   else
-    echo "${__time}W|${__msg}" >&2
+    echo "${__time}W ${__msg}" >&2
   fi
-  echo "${__time}W|${__msg}" >>"${__pu_audit_session_file}"
+  echo "${__time}W ${__msg}" >>"${__pu_audit_session_file}"
   unset __msg __time
 }
 
@@ -103,13 +103,13 @@ pu_log_e() {
   __time=$(date -u +%H%M%S)
   if [ "${__pu_colored_mode}" = "true" ]; then
     __clr='\033[0;31m' # Red
-    printf "%s%bE%b|%b%s%b\n" \
+    printf "%s%bE%b %b%s%b\n" \
       "${__time}" "${__clr}" "${__pu_clr_reset}" "${__clr}" "${__msg}" "${__pu_clr_reset}" >&2
     unset __clr
   else
-    echo "${__time}E|${__msg}" >&2
+    echo "${__time}E ${__msg}" >&2
   fi
-  echo "${__time}E|${__msg}" >>"${__pu_audit_session_file}"
+  echo "${__time}E ${__msg}" >>"${__pu_audit_session_file}"
   unset __msg __time
 }
 
@@ -123,13 +123,13 @@ pu_log_d() {
     __time=$(date -u +%H%M%S)
     if [ "${__pu_colored_mode}" = "true" ]; then
       __clr='\033[0;36m' # Cyan
-      printf "%s%bD%b|%b%s%b\n" \
+      printf "%s%bD%b %b%s%b\n" \
         "${__time}" "${__clr}" "${__pu_clr_reset}" "${__clr}" "${__msg}" "${__pu_clr_reset}" >&2
       unset __clr
     else
-      echo "${__time}D|${__msg}" >&2
+      echo "${__time}D ${__msg}" >&2
     fi
-    echo "${__time}D|${__msg}" >>"${__pu_audit_session_file}"
+    echo "${__time}D ${__msg}" >>"${__pu_audit_session_file}"
     unset __msg __time
   fi
 }

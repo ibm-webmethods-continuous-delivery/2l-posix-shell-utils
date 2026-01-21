@@ -9,7 +9,7 @@ This repository offers fundamental POSIX-compatible shell script functions that 
 The library is designed to be easily integrated into Dockerfile builds:
 
 ```dockerfile
-ARG __iwcd_pu_tag=v0.0.3
+ARG __iwcd_pu_tag=v0.1.1
 ARG __iwcd_base_url=https://raw.githubusercontent.com/ibm-webmethods-continuous-delivery/2l-posix-shell-utils/refs/tags/${__iwcd_pu_tag}
 ARG __iwcd_pu_init_sh_url=${__iwcd_base_url}/code/1.init.sh
 ARG __provided_assets=/opt/guardian
@@ -39,7 +39,7 @@ export PU_HOME="/path/to/2l-posix-shell-utils"
 
 ## Modules
 
-The library consists of four main modules:
+The library consists of seven main modules:
 
 ### 1. `1.init.sh` - Initialization Module
 - **Purpose**: Bootstrap the library and set up the environment
@@ -84,20 +84,63 @@ The library consists of four main modules:
 - **Purpose**: Miscellaneous utility functions
 - **Features**:
   - Secure password/secret input from users
-- **Functions**: `pu_read_secret_from_user`
+  - Filtered environment variable logging
+  - Debug suspension for container debugging
+- **Functions**: `pu_read_secret_from_user`, `pu_log_env_filtered`, `pu_debug_suspend`
 - **Documentation**: [docs/common-sh-quick-reference.md](docs/common-sh-quick-reference.md)
+
+### 5. `5.network.sh` - Network Utilities Module
+- **Purpose**: Network connectivity and port checking utilities
+- **Features**:
+  - Port reachability testing
+  - Wait for port with retry logic
+  - POSIX-compatible (uses nc or /dev/tcp)
+- **Functions**: `pu_port_is_reachable`, `pu_wait_for_port`
+
+### 6. `6.string.sh` - String Manipulation Module
+- **Purpose**: String encoding and manipulation utilities
+- **Features**:
+  - URL encoding
+  - POSIX-compatible string substitution
+- **Functions**: `pu_urlencode`, `pu_urlencode_pipe`, `pu_str_substitute`
+
+### 7. `7.data.sh` - Data Format Utilities Module
+- **Purpose**: Data format conversion utilities
+- **Features**:
+  - CSV to lines conversion
+  - Lines to CSV conversion
+  - YAML parsing to environment variables
+- **Functions**: `pu_csv_to_lines`, `pu_lines_to_csv`, `pu_parse_yaml`, `pu_load_env_from_yaml`
 
 ## Naming Conventions
 
-The library follows consistent naming conventions:
+The library follows strict naming conventions for consistency and maintainability. For complete details, see [Conventions.md](Conventions.md).
 
 ### Functions
 - **Public functions**: `pu_<name>` using snake_case (e.g., `pu_log_i`, `pu_audit_init_session`)
-- **Private functions**: `_pu_<name>` using snake_case (e.g., `_pu_init`, `_pu_getTimestamp`)
+- **Private functions**: `_pu_<name>` with single underscore prefix (e.g., `_pu_init`, `_pu_init_error`)
 
 ### Variables
-- **Public environment variables**: `PU_<NAME>` using UPPER_SNAKE_CASE (e.g., `PU_HOME`, `PU_DEBUG_MODE`)
-- **Private variables**: `__pu_<name>` using lower_snake_case (e.g., `__pu_debug_mode`, `__pu_audit_session_file`)
+
+#### Environment Constants (External Input)
+- **Pattern**: `PU_<NAME>` using UPPER_SNAKE_CASE
+- **Mutability**: Read-only, must not be modified by scripts
+- **Examples**: `PU_HOME`, `PU_DEBUG_MODE`, `PU_ONLINE_MODE`
+
+#### Public Script-Managed Variables
+- **Pattern**: `pu_<name>` using lower_snake_case
+- **Scope**: Cross-file, visible to all functions
+- **Examples**: `pu_debug_mode`, `pu_session_id`
+
+#### File-Scoped Private Variables
+- **Pattern**: `__<file_number>__<name>` (double underscore, file number, double underscore)
+- **Scope**: Private to all functions within a single file
+- **Examples**: `__1__online_mode`, `__2__audit_session_file`, `__3__cache_home`
+
+#### Function-Scoped Private Variables
+- **Pattern**: `__<file_number>_<function_number>_<name>`
+- **Scope**: Private to a single function, must be unset before return
+- **Examples**: `__1_03_source_tag`, `__3_02_full_file_folder`, `__5_02_count`
 
 ### Boolean Values
 Boolean shell variables are considered to be **true** if they contain the string `"true"` in lowercase. Everything else means false.
@@ -114,9 +157,19 @@ export PU_DEBUG_MODE=""        # Disables debug mode (anything except "true")
 Modules must be sourced in the correct order:
 
 1. `1.init.sh` - Must be sourced first (automatically sources `2.audit.sh`)
-2. `2.audit.sh` - Required by `3.ingester.sh` and `4.common.sh`
+2. `2.audit.sh` - Required by all other modules
 3. `3.ingester.sh` - Optional, for file download/caching
 4. `4.common.sh` - Optional, for utility functions
+5. `5.network.sh` - Optional, for network utilities
+6. `6.string.sh` - Optional, for string manipulation
+7. `7.data.sh` - Optional, for data format conversion
+
+The `1.init.sh` module can automatically source optional modules based on environment variables:
+- `PU_INIT_INGESTER=true` - Auto-source `3.ingester.sh`
+- `PU_INIT_COMMON=true` - Auto-source `4.common.sh`
+- `PU_INIT_NETWORK=true` - Auto-source `5.network.sh`
+- `PU_INIT_STRING=true` - Auto-source `6.string.sh`
+- `PU_INIT_DATA=true` - Auto-source `7.data.sh`
 
 ## Environment Variables Reference
 
@@ -127,8 +180,11 @@ Modules must be sourced in the correct order:
 | `PU_ATTENDED_MODE` | `true` | Enable interactive prompts |
 | `PU_DEBUG_MODE` | `true` | Enable debug logging |
 | `PU_COLORED_MODE` | `true` | Enable colored console output |
-| `PU_INIT_INGESTER` | `false` | Auto-source ingester module |
-| `PU_INIT_COMMON` | `false` | Auto-source common module |
+| `PU_INIT_INGESTER` | `false` | Auto-source ingester module (3.ingester.sh) |
+| `PU_INIT_COMMON` | `false` | Auto-source common module (4.common.sh) |
+| `PU_INIT_NETWORK` | `false` | Auto-source network module (5.network.sh) |
+| `PU_INIT_STRING` | `false` | Auto-source string module (6.string.sh) |
+| `PU_INIT_DATA` | `false` | Auto-source data module (7.data.sh) |
 | `PU_SOURCE_TAG` | `main` | Git tag/branch for downloads |
 | `PU_HOME_URL` | GitHub URL | Base URL for module downloads |
 | `PU_AUDIT_BASE_DIR` | `/tmp/pu-default-audit` | Base directory for audit logs |
@@ -200,7 +256,22 @@ SPDX-License-Identifier: Apache-2.0
 ## Contributing
 
 When contributing to this repository:
-1. Follow the established naming conventions
-2. Update documentation for any new functions
-3. Add tests for new functionality
-4. Ensure all tests pass on all supported platforms
+1. Follow the established naming conventions (see [Conventions.md](Conventions.md))
+2. Maintain strict POSIX compliance (no bash-isms)
+3. Update documentation for any new functions
+4. Add tests for new functionality
+5. Ensure all tests pass on all supported platforms
+6. Use proper variable scoping and cleanup (unset function-scoped variables)
+
+### Naming Convention Quick Reference
+
+- Environment constants: `PU_<NAME>` (UPPER_CASE, read-only)
+- Public functions: `pu_<action>` (no underscore prefix)
+- Private functions: `_pu_<action>` (single underscore prefix)
+- File-scoped variables: `__<file>__<name>` (e.g., `__1__online_mode`)
+- Function-scoped variables: `__<file>_<func>_<name>` (e.g., `__3_02_result`)
+- Boolean values: `"true"` for true, anything else for false
+
+For complete coding conventions, see [Conventions.md](Conventions.md).
+
+**Note for AI Assistants**: Detailed AI-specific rules are in [.ai-assist/RULES.md](.ai-assist/RULES.md).

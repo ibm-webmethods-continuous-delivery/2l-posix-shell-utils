@@ -1,12 +1,37 @@
 #!/bin/sh
 
-# Enhanced test runner with shell compatibility checks
-export PU_HOME="${PU_HOME:-..}" # Default to parent directory if not set, i.e. we are running from test/
+# shellcheck source-path=SCRIPTDIR/..
 
-errNo=0
+__all_tests_err_no=0
 
-shunit2 auditTest.sh || errNo=$((errNo + 1))
+__prt_test_head() {
+  echo "=============== runTests.sh BEGIN Test ${1} ===================="
+}
 
-shunit2 ingesterTest.sh || errNo=$((errNo + 1))
+__prt_test_end() {
+  echo "=============== runTests.sh  END  Test ${1} ===================="
+}
 
-echo "Test run completed with ${errNo} errors."
+############ Constants set 1
+__prt_test_head "Constants SET #01"
+export PU_DEBUG_ON=true
+./runTestsInner.sh
+__all_tests_err_no=$((__all_tests_err_no + $?))
+__prt_test_end "Constants SET #01"
+
+############ Constants set 2
+__prt_test_head "Constants SET #02"
+export PU_DEBUG_ON=false
+./runTestsInner.sh
+__all_tests_err_no=$((__all_tests_err_no + $?))
+__prt_test_end "Constants SET #02"
+
+############ Constants set 3
+__prt_test_head "Constants SET #03"
+unset PU_DEBUG_ON
+./runTestsInner.sh
+__all_tests_err_no=$((__all_tests_err_no + $?))
+__prt_test_end "Constants SET #03"
+
+echo "=============== runTests.sh Number of failures: ${__all_tests_err_no} ===================="
+exit ${__all_tests_err_no}

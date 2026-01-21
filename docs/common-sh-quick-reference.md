@@ -3,6 +3,8 @@
 - [4.common.sh Quick Reference](#4commonsh-quick-reference)
   - [Module Overview](#module-overview)
   - [Quick Setup](#quick-setup)
+    - [pu\_log\_env\_filtered](#pu_log_env_filtered)
+    - [pu\_debug\_suspend](#pu_debug_suspend)
   - [Functions](#functions)
     - [pu\_read\_secret\_from\_user](#pu_read_secret_from_user)
   - [Usage Examples](#usage-examples)
@@ -34,6 +36,79 @@ export PU_HOME="/path/to/2l-posix-shell-utils"
 . "${PU_HOME}/code/1.init.sh"
 . "${PU_HOME}/code/4.common.sh"
 ```
+
+
+### pu_log_env_filtered
+
+Display and log environment variables with sensitive data filtered out. Only active when debug mode is enabled.
+
+```sh
+pu_log_env_filtered [PREFIX]
+```
+
+**Parameters:**
+- `PREFIX`: OPTIONAL - Variable prefix to filter (default: "PU")
+
+**Behavior:**
+1. Only executes when `__pu_debug_mode` is `true`
+2. Filters out variables containing: PASS, password, dbpass (case-insensitive)
+3. Displays filtered variables to stderr
+4. Logs filtered variables to audit session file
+
+**Example:**
+```sh
+export APP_DATABASE_HOST="localhost"
+export APP_DATABASE_PASSWORD="secret123"
+export APP_API_KEY="key123"
+
+pu_log_env_filtered "APP"
+# Output shows APP_DATABASE_HOST and APP_API_KEY
+# But NOT APP_DATABASE_PASSWORD (filtered)
+```
+
+**Use Cases:**
+- Debugging configuration issues
+- Auditing environment setup
+- Troubleshooting without exposing secrets
+
+---
+
+### pu_debug_suspend
+
+Suspend script execution indefinitely for debugging purposes. Only active when debug mode is enabled.
+
+```sh
+pu_debug_suspend
+```
+
+**Behavior:**
+1. Only executes when `__pu_debug_mode` is `true`
+2. Logs suspension message
+3. Runs `tail -f /dev/null` to suspend indefinitely
+4. Useful for keeping containers alive for inspection
+
+**Example:**
+```sh
+# In a Docker entrypoint script
+pu_log_i "Application started"
+
+# Suspend for debugging if debug mode is on
+pu_debug_suspend
+
+# This line only reached if debug mode is off
+exec /app/start.sh
+```
+
+**Use Cases:**
+- Keeping Docker containers alive for debugging
+- Pausing execution to inspect state
+- Interactive debugging sessions
+
+**To Resume:**
+- Kill the process or container
+- Set `PU_DEBUG_MODE="false"` to skip suspension
+
+---
 
 ## Functions
 

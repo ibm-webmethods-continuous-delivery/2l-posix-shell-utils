@@ -17,6 +17,7 @@
     "juliankaindl",
     "mandoc",
     "mhutchie",
+    "microdnf",
     "myapp",
     "oderwat",
     "setlocal",
@@ -24,6 +25,7 @@
     "shfmt",
     "shunit",
     "timonwong",
+    "urlencode",
     "yzhang"
   ],
   "files.autoSave": "off",
@@ -52,5 +54,6 @@
   "html.format.enable": false,
   "json.format.enable": false,
   "javascript.format.enable": false,
-  "typescript.format.enable": false
+  "typescript.format.enable": false,
+  "files.trimTrailingWhitespace": true
 }

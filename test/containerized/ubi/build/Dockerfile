@@ -1,4 +1,4 @@
-ARG __from_img=registry.access.redhat.com/ubi8/ubi-minimal:latest
+ARG __from_img=registry.access.redhat.com/ubi9/ubi-minimal:latest
 FROM ${__from_img}
 
 # Add a user and group to run the container # keep the ids consistent across tests
@@ -13,6 +13,7 @@ RUN microdnf install -y \
     bash \
     findutils \
     shadow-utils \
+    which \
     && microdnf clean all \
     && mkdir -p /usr/local/bin \
     && curl -sSL https://raw.githubusercontent.com/kward/shunit2/refs/heads/master/shunit2 \

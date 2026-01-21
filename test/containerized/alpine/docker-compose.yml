@@ -1,6 +1,6 @@
 services:
   test:
-    image: pu_alpine_test_image:latest
+    image: pu_test_alpine_image:latest
     build:
       context: ./build
       dockerfile: Dockerfile

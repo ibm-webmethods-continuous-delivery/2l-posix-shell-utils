@@ -1,6 +1,6 @@
 services:
   test:
-    image: pu_debian_test_image:latest
+    image: pu_test_debian_image:latest
     build:
       context: ./build
       dockerfile: Dockerfile

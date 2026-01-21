@@ -1,6 +1,6 @@
 services:
   test:
-    image: my_test_ubi_image:latest
+    image: pu_test_ubi_image:latest
     build:
       context: ./build
       dockerfile: Dockerfile

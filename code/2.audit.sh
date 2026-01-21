@@ -7,11 +7,6 @@
 # with the purpose of tracing scripted activity both
 # for attended and unattended jobs
 
-if [ -z ${__1__clr_reset+x} ]; then
-  printf "FATAL: source the file 1.init.sh first"
-  exit 201
-fi
-
 # Function 01 Initialize audit session with directory structure and settings
 pu_audit_init_session() {
   # Sets up debug environment variable, audit base directory, session timestamp, and session directory

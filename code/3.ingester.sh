@@ -3,11 +3,6 @@
 # Copyright IBM Corporation All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-if [ -z ${__2__audit_session_file+x} ]; then
-  printf "FATAL: source the file 2.audit.sh first"
-  exit 201
-fi
-
 # Function 01
 _pu_init_ingester() {
   # Initialize the ingester environment

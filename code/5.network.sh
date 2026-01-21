@@ -6,11 +6,6 @@
 # This module offers network connectivity and port checking utilities
 # for POSIX-compatible shell scripts
 
-if [ -z ${__2__audit_session_file+x} ]; then
-  printf "FATAL: source the file 2.audit.sh first\n"
-  exit 201
-fi
-
 # Function 01 Check if a port is reachable on a host
 pu_port_is_reachable() {
   # Check if a specific port is reachable on a given host

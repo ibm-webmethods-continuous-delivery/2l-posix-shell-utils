@@ -5,6 +5,8 @@
 
 ## Quick start init file for the current utilities
 
+# shellcheck source-path=SCRIPTDIR/..
+
 # Function 01
 _pu_init_error(){
   # This is intended to be private to the current file. use pu_log_? for general auditing functions after sourcing audit.sh
@@ -32,6 +34,7 @@ _pu_init_info(){
     echo "PU1|INFO: ${1}" >&2
   fi
 }
+
 
 # Function 03
 pu_init_hunt_for_pu_file() {
@@ -63,7 +66,7 @@ _pu_init(){
   # Rule: you MUST have at least this file in the folder ${PU_HOME}/code/init.sh, i.e. ${PU_HOME} MUST be correctly initialized.
 
   if [ ! -f "${PU_HOME}/code/1.init.sh" ]; then
-    _pu_init_error "04|${PU_HOME}/code/1.init.sh file not found!"
+    _pu_init_error "04|${PU_HOME}/code/1.init.sh file not found! Is the PU_HOME env var correctly set?"
     exit 201 # serious enough
   fi
 

@@ -45,9 +45,18 @@ pu_audited_exec() {
   #   $2 - tag for trace files
   __2_02_current_epoch="$(date +%s)"
   __2_02_file_name="${__2__audit_session_dir}/cExec_${__2_02_current_epoch}_${2}"
+
   eval "${1}" >"${__2_02_file_name}.out" 2>"${__2_02_file_name}.err"
+  __2_02_eval_res=$?
+  if [ ${__2_02_eval_res} -ne 0 ]; then
+      pu_log_e "PU2|02| Command having tag ${2} failed with code: ${__2_02_eval_res}"
+      pu_log_d "PU2|02| Command output: ${__2_02_file_name}.out"
+      pu_log_d "PU2|02| Command error: ${__2_02_file_name}.err"
+      unset __2_02_current_epoch __2_02_file_name
+      return 1
+  fi
   unset __2_02_current_epoch __2_02_file_name
-  return $?
+  return 0
 }
 
 # Function 03 Generate consistent timestamps with epoch time base for audit logging

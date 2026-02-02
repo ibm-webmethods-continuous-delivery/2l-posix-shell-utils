@@ -24,15 +24,17 @@ pu_audit_init_session() {
   pu_log_i "PU2|01| A new session had been initialized"
   pu_log_i "PU2|01| Current timestamp is   : $(date +%y-%m-%dT%H.%M.%S)"
   pu_log_i "PU2|01| Current session file is: ${__2__audit_session_file}"
-  pu_log_i "PU2|01| =========> Received audit session variables:"
-  pu_log_i "PU2|01| PU_AUDIT_BASE_DIR=${PU_AUDIT_BASE_DIR}"
-  pu_log_i "PU2|01| PU_SESSION_TIMESTAMP=${PU_SESSION_TIMESTAMP}"
-  pu_log_i "PU2|01| =========> Effective audit session variables:"
-  pu_log_i "PU2|01| __2__audit_base_dir=${__2__audit_base_dir}"
-  pu_log_i "PU2|01| __2__audit_session_dir=${__2__audit_session_dir}"
-  pu_log_i "PU2|01| __1__colored_mode=${__1__colored_mode}"
-  pu_log_i "PU2|01| __1__debug_mode=${__1__debug_mode}"
-  pu_log_i "PU2|01| __2__session_timestamp=${__2__session_timestamp}"
+  pu_log_d "PU2|01| =========> Received audit session variables:"
+  pu_log_d "PU2|01| PU_AUDIT_BASE_DIR=${PU_AUDIT_BASE_DIR}"
+  pu_log_d "PU2|01| PU_SESSION_TIMESTAMP=${PU_SESSION_TIMESTAMP}"
+  pu_log_d "PU2|01| =========> Effective audit session variables:"
+  pu_log_d "PU2|01| __2__audit_base_dir=${__2__audit_base_dir}"
+  pu_log_d "PU2|01| __2__audit_session_dir=${__2__audit_session_dir}"
+  # shellcheck disable=SC2154
+  pu_log_d "PU2|01| __1__colored_mode=${__1__colored_mode}"
+  # shellcheck disable=SC2154
+  pu_log_d "PU2|01| __1__debug_mode=${__1__debug_mode}"
+  pu_log_d "PU2|01| __2__session_timestamp=${__2__session_timestamp}"
   pu_log_i "PU2|01| ==============================================================="
 
   return $?

@@ -48,14 +48,14 @@ pu_audited_exec() {
   __2_02_current_epoch="$(date +%s)"
   __2_02_file_name="${__2__audit_session_dir}/cExec_${__2_02_current_epoch}_${2}"
 
-  eval "${1}" >"${__2_02_file_name}.out" 2>"${__2_02_file_name}.err"
+  eval "${1}" > "${__2_02_file_name}.out" 2> "${__2_02_file_name}.err"
   __2_02_eval_res=$?
   if [ ${__2_02_eval_res} -ne 0 ]; then
-      pu_log_e "PU2|02| Command having tag ${2} failed with code: ${__2_02_eval_res}"
-      pu_log_d "PU2|02| Command output: ${__2_02_file_name}.out"
-      pu_log_d "PU2|02| Command error: ${__2_02_file_name}.err"
-      unset __2_02_current_epoch __2_02_file_name
-      return 1
+    pu_log_e "PU2|02| Command having tag ${2} failed with code: ${__2_02_eval_res}"
+    pu_log_d "PU2|02| Command output: ${__2_02_file_name}.out"
+    pu_log_d "PU2|02| Command error: ${__2_02_file_name}.err"
+    unset __2_02_current_epoch __2_02_file_name
+    return 1
   fi
   unset __2_02_current_epoch __2_02_file_name
   return 0
@@ -80,7 +80,7 @@ pu_log_i() {
 
   # Decision: Info messages are never colored, color distinguish the other types
   echo "${__2_04_time}I ${__2_04_msg}" >&2
-  echo "${__2_04_time}I ${__2_04_msg}" >>"${__2__audit_session_file}"
+  echo "${__2_04_time}I ${__2_04_msg}" >> "${__2__audit_session_file}"
   unset __2_04_msg __2_04_time
 }
 
@@ -98,7 +98,7 @@ pu_log_w() {
   else
     echo "${__2_05_time}W ${__2_05_msg}" >&2
   fi
-  echo "${__2_05_time}W ${__2_05_msg}" >>"${__2__audit_session_file}"
+  echo "${__2_05_time}W ${__2_05_msg}" >> "${__2__audit_session_file}"
   unset __2_05_msg __2_05_time
 }
 
@@ -116,7 +116,7 @@ pu_log_e() {
   else
     echo "${__2_06_time}E ${__2_06_msg}" >&2
   fi
-  echo "${__2_06_time}E ${__2_06_msg}" >>"${__2__audit_session_file}"
+  echo "${__2_06_time}E ${__2_06_msg}" >> "${__2__audit_session_file}"
   unset __2_06_msg __2_06_time
 }
 
@@ -136,7 +136,7 @@ pu_log_d() {
     else
       echo "${__2_07_time}D ${__2_07_msg}" >&2
     fi
-    echo "${__2_07_time}D ${__2_07_msg}" >>"${__2__audit_session_file}"
+    echo "${__2_07_time}D ${__2_07_msg}" >> "${__2__audit_session_file}"
     unset __2_07_msg __2_07_time
   fi
 }
@@ -150,16 +150,16 @@ pu_log_env() {
   pu_log_i "PU2|08| >>>>>>>>>>>>>>>> Begin Listing PU environment variables:"
   pu_log_i "PU2|08| >>>>>>>>>>>> PU global public constants:"
   env | grep PU_ | grep -vi _PASS | grep -v _PU_ | sort
-  env | grep PU_ | grep -vi _PASS | grep -v _PU_ | sort >>"${__2__audit_session_file}"
+  env | grep PU_ | grep -vi _PASS | grep -v _PU_ | sort >> "${__2__audit_session_file}"
   pu_log_i "PU2|08| >>>>>>>>>>>> __PU global private constants:"
   env | grep __PU_ | grep -vi _PASS | sort
-  env | grep __PU_ | grep -vi _PASS | sort >>"${__2__audit_session_file}"
+  env | grep __PU_ | grep -vi _PASS | sort >> "${__2__audit_session_file}"
   pu_log_i "PU2|08| >>>>>>>>>>>> pu_ global public variables:"
   env | grep pu_ | grep -v __pu_ | grep -vi _PASS | sort
-  env | grep pu_ | grep -v __pu_ | grep -vi _PASS | sort >>"${__2__audit_session_file}"
+  env | grep pu_ | grep -v __pu_ | grep -vi _PASS | sort >> "${__2__audit_session_file}"
   pu_log_i "PU2|08| >>>>>>>>>>>> __pu_ global private variables:"
   env | grep __pu_ | grep -vi _PASS | sort
-  env | grep __pu_ | grep -vi _PASS | sort >>"${__2__audit_session_file}"
+  env | grep __pu_ | grep -vi _PASS | sort >> "${__2__audit_session_file}"
   pu_log_i "PU2|08| >>>>>>>>>>>>>>>> End Listing PU environment variables"
 }
 
@@ -172,6 +172,6 @@ pu_log_full_env() {
     pu_log_d "PU2|09| -- Listing full environment... --"
     env | sort >&2
     pu_log_d "PU2|09| -- Listing PU environment... --"
-    env | grep -i PU | sort >>"${__2__audit_session_file}" >&2
+    env | grep -i PU | sort >> "${__2__audit_session_file}" >&2
   fi
 }

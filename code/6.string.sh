@@ -31,7 +31,7 @@ pu_urlencode_pipe() {
     esac
     # shellcheck disable=SC2059
     printf "$__6_01_c" | od -An -tx1 | tr ' ' % | tr -d '\n'
-  done <<EOF
+  done << EOF
 $(fold -w1)
 EOF
   echo

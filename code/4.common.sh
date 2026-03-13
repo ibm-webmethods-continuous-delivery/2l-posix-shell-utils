@@ -57,7 +57,7 @@ pu_log_env_filtered() {
     env | grep "${__4_02_var_prefix}_" | grep -v PASS | grep -vi password | grep -vi dbpass | sort >&2
   fi
 
-  env | grep "${__4_02_var_prefix}_" | grep -v PASS | grep -vi password | grep -vi dbpass | sort >>"${__2__audit_session_file}"
+  env | grep "${__4_02_var_prefix}_" | grep -v PASS | grep -vi password | grep -vi dbpass | sort >> "${__2__audit_session_file}"
 
   unset __4_02_var_prefix
   return 0

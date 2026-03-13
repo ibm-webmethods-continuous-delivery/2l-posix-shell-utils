@@ -35,12 +35,12 @@ pu_port_is_reachable() {
   if [ -f /usr/bin/nc ]; then
     # Use netcat if available (e.g., Alpine Linux)
     # shellcheck disable=SC2086
-    nc -z ${__5_01_host} ${__5_01_port} >/dev/null 2>&1
+    nc -z ${__5_01_host} ${__5_01_port} > /dev/null 2>&1
     __5_01_result=$?
   else
     # Fall back to /dev/tcp (e.g., bash on CentOS/RHEL)
     # shellcheck disable=SC3025,SC2086
-    (echo >/dev/tcp/${__5_01_host}/${__5_01_port}) >/dev/null 2>&1
+    (echo > /dev/tcp/${__5_01_host}/${__5_01_port}) > /dev/null 2>&1
     __5_01_result=$?
   fi
 
